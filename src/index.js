@@ -1,30 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import ReactDOM from "react-dom/client"
 import Order from './Order/Order'
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import OrderCreate from './Order/Methods/OrderCreate'
+import Layout from "./Layout/Layout"
+import LogIn from "./LogIn/LogIn"
+import LogOff from "./LogOff/LogOff"
 const App = () => {
     const [orders, setOrders] = useState([])
-    const addOrder=(order)=>setOrders([...orders,order])
+    const addOrder = (order) => setOrders([...orders, order])
     const removeOrder = (removeId) => setOrders(orders.filter(({ id }) => id
-!== removeId));
+        !== removeId));
+    const [user, setUser] = useState({ isAuthenticated: false, userName: "" })
+    useEffect(() => {
+        const getUser = async () => {
+            return await fetch("https://localhost:7043/api/account/isauthenticated")
+                .then((response) => {
+                    response.status === 401 &&
+                        setUser({ isAuthenticated: false, userName: "" })
+                    return response.json()
+                })
+                .then(
+                    (data) => {
+                        if (
+                            typeof data !== "undefined" &&
+                            typeof data.userName !== "undefined"
+                        ) {
+                            setUser({ isAuthenticated: true, userName: data.userName })
+                        }
+                    },
+                    (error) => {
+                        console.log(error)
+                    }
+                )
+        }
+        getUser()
+    }, [setUser])
+
     return (
-        <div>
-            <OrderCreate
-            addOrder={addOrder}
-        />
-        
-            <Order
-                Orders={orders}
-                setOrders={setOrders}
-                removeOrder={removeOrder}
-            />
-        </div>
-    )
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout user={user} />}>
+                    <Route index element={<h3>Главная страница</h3>} />
+                    <Route
+                        path="/orders"
+                        element={
+<>
+
+                                <OrderCreate
+                                    addOrder={addOrder}
+                                />
+
+                                <Order
+                                user={user}
+                                    Orders={orders}
+                                    setOrders={setOrders}
+                                    removeOrder={removeOrder}
+                                />
+</>
+                                
 }
-const root = ReactDOM.createRoot(document.getElementById("root"))
-root.render(
+/>
+<Route
+path="/login"
+element={<LogIn user={user} setUser={setUser} />}
+/>
+<Route path="/logoff" element={<LogOff setUser={setUser} />} />
+<Route path="*" element={<h3>404</h3>} />
+</Route>
+</Routes>
+</BrowserRouter>)}
+                                const root = ReactDOM.createRoot(document.getElementById("root"))
+                                root.render(
     // <React.StrictMode>
-    <App />
+                                    <App />
     // </React.StrictMode>
-)
+                                )
 
