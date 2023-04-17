@@ -11,11 +11,11 @@ const LogOff = ({ setUser }) => {
     return await fetch("https://localhost:7043/api/account/logoff", requestOptions).then(
       (response) => {
         response.status === 200 &&
-          setUser({ isAuthenticated: false, userName: "" })
-        response.status === 401 && navigate("/login")
+          setUser({ isAuthenticated: false, userName: "" });
+        response.status === 401 && navigate("/login");
       }
-    )
-  }
+    );
+  };
   return (
     <>
       <p></p>
@@ -23,6 +23,6 @@ const LogOff = ({ setUser }) => {
         <button type="submit">Выход</button>
       </form>
     </>
-  )
-}
+  );
+};
 export default LogOff

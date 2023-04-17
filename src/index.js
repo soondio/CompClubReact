@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from "react-dom/client"
 import Order from './Order/Order'
 import { BrowserRouter, Route, Routes } from "react-router-dom"
@@ -6,6 +6,8 @@ import OrderCreate from './Order/Methods/OrderCreate'
 import Layout from "./Layout/Layout"
 import LogIn from "./LogIn/LogIn"
 import LogOff from "./LogOff/LogOff"
+import Register from './Register/Register'
+
 const App = () => {
     const [orders, setOrders] = useState([])
     const addOrder = (order) => setOrders([...orders, order])
@@ -45,35 +47,37 @@ const App = () => {
                     <Route
                         path="/orders"
                         element={
-<>
+                            <>
 
                                 <OrderCreate
                                     addOrder={addOrder}
                                 />
 
                                 <Order
-                                user={user}
+                                    user={user}
                                     Orders={orders}
                                     setOrders={setOrders}
                                     removeOrder={removeOrder}
                                 />
-</>
-                                
+                            </>
+
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={<LogIn user={user} setUser={setUser} />}
+                    />
+                    <Route path="/logoff" element={<LogOff setUser={setUser} />} />
+                    <Route path="/register" element={<Register setUser={setUser} />} />
+                    <Route path="*" element={<h3>404</h3>} />
+                </Route>
+            </Routes>
+        </BrowserRouter>)
 }
-/>
-<Route
-path="/login"
-element={<LogIn user={user} setUser={setUser} />}
-/>
-<Route path="/logoff" element={<LogOff setUser={setUser} />} />
-<Route path="*" element={<h3>404</h3>} />
-</Route>
-</Routes>
-</BrowserRouter>)}
-                                const root = ReactDOM.createRoot(document.getElementById("root"))
-                                root.render(
+const root = ReactDOM.createRoot(document.getElementById("root"))
+root.render(
     // <React.StrictMode>
-                                    <App />
+    <App />
     // </React.StrictMode>
-                                )
+)
 

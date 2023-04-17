@@ -21,7 +21,7 @@ const LogIn = ({ user, setUser }) => {
     }
     return await fetch("https://localhost:7043/api/account/login", requestOptions)
       .then((response) => {
-        // console.log(response.status)
+        console.log(response.status)
         response.status === 200 &&
           setUser({ isAuthenticated: true, userName: "" })
         return response.json()
