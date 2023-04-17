@@ -7,7 +7,7 @@ const LogOff = ({ setUser }) => {
 
     const requestOptions = {
       method: "POST",
-    }
+    };
     return await fetch("https://localhost:7043/api/account/logoff", requestOptions).then(
       (response) => {
         response.status === 200 &&
@@ -25,4 +25,4 @@ const LogOff = ({ setUser }) => {
     </>
   );
 };
-export default LogOff
+export default LogOff;

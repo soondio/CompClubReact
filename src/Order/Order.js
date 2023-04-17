@@ -46,8 +46,9 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
         <div className="Order" key={id} id={id}>
 
           <strong>Заказ №{id} совершил клиент:</strong>
-          {user.isAuthenticated ? (
-          <button onClick={(e) => deleteItem({ id })}>Удалить</button>
+          
+          {user.isAuthenticated && user.userRole == "user" ? (
+          <button onClick={() => deleteItem({ id })}>Удалить</button>
           ) : ("")}
           {client ? (
             <div className="ClientInfo">
