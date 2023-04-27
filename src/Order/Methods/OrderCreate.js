@@ -14,7 +14,7 @@ function CreateOrder() {
       startTime,
       endTime,
     };
-    const response = await fetch('https://localhost:7043/api/orders', {
+    const response = await fetch('/api/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

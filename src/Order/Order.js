@@ -7,7 +7,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
           const requestOptions = {
               method: 'GET'
           }
-          return await fetch("https://localhost:7043/api/Orders/",
+          return await fetch("/api/Orders/",
 
               requestOptions)
 
@@ -29,7 +29,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
     const requestOptions = {
       method: 'DELETE',
     };
-    return await fetch(`http://localhost:7043/api/Orders/${id}`, requestOptions).then(
+    return await fetch(`api/Orders/${id}`, requestOptions).then(
       (response) => {
         if (response.ok) {
           removeOrder(id);

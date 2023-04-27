@@ -24,7 +24,7 @@ const Register = ({setUser})=>{
                 body: JSON.stringify(newUser),
             };
 
-            const response = await fetch("https://localhost:7043/api/account/register",requestOptions);
+            const response = await fetch("/api/account/register",requestOptions);
             return await response.json().then(
                 (data)=>{
                     console.log(data);

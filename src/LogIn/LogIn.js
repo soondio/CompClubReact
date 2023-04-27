@@ -19,7 +19,7 @@ const LogIn = ({ user, setUser }) => {
         password: password.value,
       }),
     }
-    return await fetch("https://localhost:7043/api/account/login", requestOptions)
+    return await fetch("/api/account/login", requestOptions)
       .then((response) => {
         console.log(response.status)
         response.status === 200 &&
