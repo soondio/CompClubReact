@@ -12,7 +12,8 @@ const LogOff = ({ setUser }) => {
       (response) => {
         response.status === 200 &&
           setUser({ isAuthenticated: false, userName: "" });
-        response.status === 401 && navigate("/login");
+        response.status === 401 ? navigate("/login"): navigate("/");
+        
       }
     );
   };

@@ -29,7 +29,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
     const requestOptions = {
       method: 'DELETE',
     };
-    return await fetch(`api/Orders/${id}`, requestOptions).then(
+    return await fetch(`/api/Orders/${id}`, requestOptions).then(
       (response) => {
         if (response.ok) {
           removeOrder(id);
@@ -47,7 +47,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
 
           <strong>Заказ №{id} совершил клиент:</strong>
           
-          {user.isAuthenticated && user.userRole == "user" ? (
+          {user.isAuthenticated && user.userRole == "admin" ? (
           <button onClick={() => deleteItem({ id })}>Удалить</button>
           ) : ("")}
           {client ? (

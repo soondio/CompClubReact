@@ -13,32 +13,33 @@ const App = () => {
     const addOrder = (order) => setOrders([...orders, order])
     const removeOrder = (removeId) => setOrders(orders.filter(({ id }) => id
         !== removeId));
-    const [user, setUser] = useState({ isAuthenticated: false, userName: "" })
-    useEffect(() => {
-        const getUser = async () => {
-            return await fetch("https://localhost:7043/api/account/isauthenticated")
-                .then((response) => {
-                    response.status === 401 &&
-                        setUser({ isAuthenticated: false, userName: "" })
-                    return response.json()
-                })
-                .then(
-                    (data) => {
-                        if (
-                            typeof data !== "undefined" &&
-                            typeof data.userName !== "undefined"
-                        ) {
-                            setUser({ isAuthenticated: true, userName: data.userName })
-                        }
-                    },
-                    (error) => {
-                        console.log(error)
-                    }
-                )
-        }
-        getUser()
-    }, [setUser])
-
+        const [user, setUser] = useState({ isAuthenticated: false, userName: "", userRole: "" });
+        useEffect(() => {
+      
+      
+          const getUser = async () => {
+            return await fetch("/api/Account/IsAuthenticated")
+              .then((response) => {
+                response.status === 401 &&
+                  setUser({ isAuthenticated: false, userName: "" });
+                return response.json;
+              })
+              .then(
+                (data) => {
+                  if (
+                    typeof data != "undefined" &&
+                    typeof data.userName != "undefined"
+                  ) {
+                    setUser({ isAuthenticated: true, userName: data.userName, userRole: data.userRole });
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+          };
+          getUser();
+        }, [setUser]);
     return (
         <BrowserRouter>
             <Routes>
