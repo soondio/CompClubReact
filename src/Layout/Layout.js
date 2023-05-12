@@ -13,9 +13,15 @@ const Layout = ({ user }) => {
             <nav>
                 <Link to="/">Главная</Link> <span> </span>
                 <Link to="/orders">Заказы</Link> <span> </span>
-                <Link to="/login">Вход</Link> <span> </span>
-                <Link to="/logoff">Выход</Link>
-                <Link to="/register">Регистрация</Link>
+                {user.isAuthenticated?(                
+                <Link to="/login">Вход</Link>):("")}
+                {!user.isAuthenticated?(
+                <Link to="/register">Регистрация</Link>):("")}
+                {user.isAuthenticated?(
+                <Link to="/logoff">Выход</Link>):("")}
+                {user.isAuthenticated?(
+                <Link to="/client">Личный кабинет</Link>):("")}
+                                
             </nav>
             <Outlet />
 

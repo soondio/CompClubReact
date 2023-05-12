@@ -7,7 +7,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
           const requestOptions = {
               method: 'GET'
           }
-          return await fetch("/api/Orders/",
+          return await fetch("api/Orders/",
 
               requestOptions)
 
@@ -42,27 +42,28 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
   return (
     <React.Fragment>
       <h3>Список заказов</h3>
-      {Orders.map(({ id, client, computerId, startTime, endTime }) => (
-        <div className="Order" key={id} id={id}>
-
-          <strong>Заказ №{id} совершил клиент:</strong>
-          
-          {user.isAuthenticated && user.userRole == "admin" ? (
-          <button onClick={() => deleteItem({ id })}>Удалить</button>
-          ) : ("")}
-          {client ? (
-            <div className="ClientInfo">
-              <strong>{client.name}, email: {client.email}</strong>
+      {user.userRole === "admin" ? (
+        <div>
+          {Orders.map(({ id, client, computerId, startTime, endTime }) => (
+            <div className="Order" key={id} id={id}>
+              <strong>Заказ №{id} совершил клиент:</strong>
+              <button onClick={() => deleteItem({ id })}>Удалить</button>
+              {client ? (
+                <div className="ClientInfo">
+                  <strong>{client.name}, email: {client.email}</strong>
+                </div>
+              ) : (
+                <div>Клиент не указан</div>
+              )}
+              <strong> клиент находился за компьютером №{computerId}</strong>
+              <div>Дата начала: {new Date(startTime).toLocaleString()}</div>
+              <div>Дата окончания: {new Date(endTime).toLocaleString()}</div>
             </div>
-          ) : (
-            <div>Клиент не указан</div>
-          )}
-          <strong> клиент находился за компьютером №{computerId}</strong>
-          <div>Дата начала: {new Date(startTime).toLocaleString()}</div>
-          <div>Дата окончания: {new Date(endTime).toLocaleString()}</div>
-
+          ))}
         </div>
-      ))}
+      ) : (
+          <div>Доступ к заказам имеет только администратор</div>
+        )}
     </React.Fragment>
   );
 };

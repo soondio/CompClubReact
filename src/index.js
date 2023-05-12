@@ -7,6 +7,7 @@ import Layout from "./Layout/Layout"
 import LogIn from "./LogIn/LogIn"
 import LogOff from "./LogOff/LogOff"
 import Register from './Register/Register'
+import PersonalAccount from './Client/PersonalAccount'
 
 const App = () => {
     const [orders, setOrders] = useState([])
@@ -18,7 +19,7 @@ const App = () => {
       
       
           const getUser = async () => {
-            return await fetch("/api/Account/IsAuthenticated")
+            return await fetch("api/account/isauthenticated")
               .then((response) => {
                 response.status === 401 &&
                   setUser({ isAuthenticated: false, userName: "" });
@@ -70,6 +71,10 @@ const App = () => {
                     />
                     <Route path="/logoff" element={<LogOff setUser={setUser} />} />
                     <Route path="/register" element={<Register setUser={setUser} />} />
+                    <Route
+            path="/client"
+            element={<PersonalAccount user={user} />}
+          />
                     <Route path="*" element={<h3>404</h3>} />
                 </Route>
             </Routes>
