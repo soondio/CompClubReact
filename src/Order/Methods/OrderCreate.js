@@ -1,16 +1,65 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
 function CreateOrder() {
-  const [clientId, setClientId] = useState('');
-  const [computerId, setComputerId] = useState('');
+  const [computers, setComputers] = useState([]);
+  const [selectedComputer, setSelectedComputer] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [selectedComputerDetails, setSelectedComputerDetails] = useState({});
+  const [availableComputers, setAvailableComputers] = useState([]);
+
+
+  useEffect(() => {
+    const fetchClient = async () => {
+      const response = await fetch('/api/client');
+      const data = await response.json();
+      setUserId(data.id);
+    };
+    fetchClient();
+  }, []);
+
+  useEffect(() => {
+    const fetchComputers = async () => {
+      const response = await fetch('/api/computer');
+      const data = await response.json();
+      setComputers(data);
+    };
+    fetchComputers();
+  }, []);
+  
+useEffect(() => {
+  const fetchAvailableComputers = async () => {
+    if (startTime !== "" && endTime !== "") {
+      const response = await fetch(
+        `/api/availability?date=${startTime}&date2=${endTime}`
+      );
+      const data = await response.json();
+      setAvailableComputers(data);
+      console.log(data);
+    }
+  };
+  fetchAvailableComputers();
+
+
+}, [startTime, endTime, computers]);
+
+  useEffect(() => {
+    const fetchSelectedComputerDetails = async () => {
+      if (selectedComputer !== null) {
+        const response = await fetch(`/api/computer/${selectedComputer}`);
+        const data = await response.json();
+        setSelectedComputerDetails(data);
+      }
+    };
+    fetchSelectedComputerDetails();
+  }, [selectedComputer]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const orderData = {
-      clientId,
-      computerId,
+      clientId: userId,
+      computerId: selectedComputer,
       startTime,
       endTime,
     };
@@ -24,29 +73,12 @@ function CreateOrder() {
     const data = await response.json();
     console.log(data);
   };
+  
 
   return (
     <div>
       <h2>Создание нового заказа</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="client-id">ID клиента:</label>
-          <input
-            type="text"
-            id="client-id"
-            value={clientId}
-            onChange={(event) => setClientId(event.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="computer-id">ID компьютера:</label>
-          <input
-            type="text"
-            id="computer-id"
-            value={computerId}
-            onChange={(event) => setComputerId(event.target.value)}
-          />
-        </div>
         <div>
           <label htmlFor="start-time">Дата начала:</label>
           <input
@@ -65,10 +97,50 @@ function CreateOrder() {
             onChange={(event) => setEndTime(event.target.value)}
           />
         </div>
-        <button type="submit">Создать заказ</button>
+        {availableComputers.length > 0 ? (
+          <div>
+            <label htmlFor="computer">Выберите компьютер:</label>
+            <select
+              id="computer"
+              value={selectedComputer}
+              onChange={(event) => setSelectedComputer(event.target.value)}
+            >
+              <option value="" disabled>
+                --Выберите компьютер--
+              </option>
+              {availableComputers.map((computer) => (
+                <option key={computer.id} value={computer.id}>
+                  {computer.id}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <div>
+            <p>Нет доступных компьютеров на указанный период времени.</p>
+          </div>
+        )}
+        {selectedComputer !== "" && (
+          <div>
+            <h3>Характеристики компьютера:</h3>
+            <ul>
+              <li>Процессор: {selectedComputerDetails.processorName}</li>
+              <li>Видеокарта: {selectedComputerDetails.videocardName}</li>
+              <li>ОЗУ: {selectedComputerDetails.memoryName}</li>
+              <li>Монитор: {selectedComputerDetails.monitorName}</li>
+            </ul>
+          </div>
+        )}
+        <button type="submit" disabled={!selectedComputer || !startTime || !endTime}>
+          Забронировать
+        </button>
       </form>
     </div>
   );
+
+
+
+
 }
 
 export default CreateOrder;

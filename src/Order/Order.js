@@ -44,7 +44,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
       <h3>Список заказов</h3>
       {user.userRole === "admin" ? (
         <div>
-          {Orders.map(({ id, client, computerId, startTime, endTime }) => (
+          {Orders.map(({ id, client, computerId, startTime, endTime,status }) => (
             <div className="Order" key={id} id={id}>
               <strong>Заказ №{id} совершил клиент:</strong>
               <button onClick={() => deleteItem({ id })}>Удалить</button>
@@ -58,6 +58,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
               <strong> клиент находился за компьютером №{computerId}</strong>
               <div>Дата начала: {new Date(startTime).toLocaleString()}</div>
               <div>Дата окончания: {new Date(endTime).toLocaleString()}</div>
+              <strong>Статус заказа: {status}</strong>
             </div>
           ))}
         </div>
