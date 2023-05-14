@@ -41,9 +41,9 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
 
   return (
     <React.Fragment>
-      <h3>Список заказов</h3>
       {user.userRole === "admin" ? (
         <div>
+          <h3>Список заказов</h3>
           {Orders.map(({ id, client, computerId, startTime, endTime,status }) => (
             <div className="Order" key={id} id={id}>
               <strong>Заказ №{id} совершил клиент:</strong>
@@ -63,7 +63,7 @@ const Order = ({ Orders, setOrders,removeOrder,user }) => {
           ))}
         </div>
       ) : (
-          <div>Доступ к заказам имеет только администратор</div>
+          ""
         )}
     </React.Fragment>
   );

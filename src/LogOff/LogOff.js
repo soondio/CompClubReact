@@ -1,10 +1,22 @@
-import React from "react"
-import { useNavigate } from "react-router-dom"
-const LogOff = ({ setUser }) => {
-  const navigate = useNavigate()
-  const logOff = async (event) => {
-    event.preventDefault();
+import React from "react";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
+const { confirm } = Modal;
+
+const LogOff = ({ setUser }) => {
+  const navigate = useNavigate();
+
+  const showConfirm = () => {
+    confirm({
+      title: "Вы уверены что хотите выйти?",
+      icon: <ExclamationCircleOutlined />,
+      onOk: logOff,
+    });
+  };
+
+  const logOff = async () => {
     const requestOptions = {
       method: "POST",
     };
@@ -12,18 +24,17 @@ const LogOff = ({ setUser }) => {
       (response) => {
         response.status === 200 &&
           setUser({ isAuthenticated: false, userName: "" });
-        response.status === 401 ? navigate("/login"): navigate("/");
-        
+        response.status === 401 ? navigate("/login") : navigate("/");
       }
     );
   };
+
   return (
     <>
       <p></p>
-      <form onSubmit={logOff}>
-        <button type="submit">Выход</button>
-      </form>
+      <button onClick={showConfirm}>Выход</button>
     </>
   );
 };
+
 export default LogOff;

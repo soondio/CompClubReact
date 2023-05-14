@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from 'antd';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -26,6 +27,20 @@ const UserProfile = () => {
     fetchOrders();
   }, [user]);
 
+  const cancelOrder = async (orderId) => {
+    const response = await fetch(`/api/Orders/${orderId}/cancel`, {
+      method: 'PUT',
+    });
+    const data = await response.json();
+    if (response.ok) {
+      setOrders(orders.map((order) =>
+        order.id === orderId ? data : order
+      ));
+    } else {
+      console.log(data.message);
+    }
+  };
+
   return (
     <div>
       {user ? (
@@ -45,6 +60,11 @@ const UserProfile = () => {
                   <p>Start Time: {order.startTime}</p>
                   <p>End Time: {order.endTime}</p>
                   <p>Status: {order.status}</p>
+                  {order.status === 'оформлен' && (
+                    <Button onClick={() => cancelOrder(order.id)}>
+                      Cancel order
+                    </Button>
+                  )}
                 </li>
               ))}
             </ul>

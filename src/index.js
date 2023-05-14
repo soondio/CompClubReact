@@ -8,6 +8,8 @@ import LogIn from "./LogIn/LogIn"
 import LogOff from "./LogOff/LogOff"
 import Register from './Register/Register'
 import PersonalAccount from './Client/PersonalAccount'
+import ComputerList from './Computer/ComputerPage'
+import HomePage from './MainPage/MainPage';
 
 const App = () => {
     const [orders, setOrders] = useState([])
@@ -45,7 +47,8 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout user={user} />}>
-                    <Route index element={<h3>Главная страница</h3>} />
+                <Route index element={<div><HomePage /></div>} />
+
                     <Route
                         path="/orders"
                         element={
@@ -69,6 +72,7 @@ const App = () => {
                         path="/login"
                         element={<LogIn user={user} setUser={setUser} />}
                     />
+                    <Route path="/computer" element={<ComputerList />} />
                     <Route path="/logoff" element={<LogOff setUser={setUser} />} />
                     <Route path="/register" element={<Register setUser={setUser} />} />
                     <Route
